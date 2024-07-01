@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<style>
+    .logo a{
+    text-decoration-line: none;
+    }
+    .logo a:link{
+        color: black;
+    }
+    .logo a:link{
+        color: black;
+    }
+    .logo a:visited{
+        color: black;
+    }
+    .logoImg{
+        margin-left: 50px;
+        vertical-align: middle;
+    }
+    .logoText{
+        font-family: "DM Serif Display", serif;
+        font-weight: 400;
+        font-style: italic;
+    }
+    .menu{
+        float: left;
+        margin: 10px;
+        box-sizing: border-box;
+        background-color: #D7EFE7;
+    }
+
+    .menu ul{
+        list-style-type: none;
+    }
+    .menu a{
+        text-decoration: none;
+        font-size: 20px;
+        color: #363636;
+        display: block;
+        margin-left: -20px;
+    }
+
+    .item{
+        margin: 3px;
+        display: inline-block;
+    }
+    .text{
+        display: inline-block;
+    }
+    .btnS{
+        border: 1px solid black;
+        background-color: #D7EFE7;
+    }
+    .list, th{
+        width: 2000px;
+        word-break: break-all;
+        border-collapse: 1px;
+    }
+    .table{
+        border: 1px solid black;
+        width: 50%
+    }
+    .table th{
+        border: 1px solid;
+    }
+    .table td{
+        width: 20px;
+        border: 1px solid;
+    }
+    .page{
+        text-align: center;
+        margin-top: 30px;
+    }
+    .btn_c{
+        border: 1px solid black;
+        background-color: #D7EFE7;
+        float: right;
+        margin-top: 20px;
+    }
+    .btn_d{
+        border: 1px solid black;
+        background-color: #D7EFE7;
+        margin-top: 20px;
+    }
+
+
+    body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .board-view {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px;
+        }
+        .board-view th, .board-view td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .board-view th {
+            width: 150px;
+            background-color: #f9f9f9;
+        }
+
+        .buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+        .buttons-left, .buttons-right {
+            display: flex;
+            gap: 10px;
+        }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>US2 관리자 사이트 게시글</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jua&family=Lilita+One&family=Oswald:wght@200..700&family=Poetsen+One&family=Teko:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="logo" class="logo">
+    <a href="/member">
+        <img class="logoImg" src="logo.png" alt="로고" width="150px" height="150px">
+        <span class=logoText style="font-size:30px;margin-top:20px;"> US2</span>
+    </a>
+</div>
+<div id="menu" class="menu">
+    <ul>
+        <li><a href="/member">사용자 관리</a></li>
+    </ul>
+    <ul>
+        <li><a href="/sponsor">후원 관리</a></li>
+    </ul>
+    <ul>
+        <li><a href="/breed">게시글 관리</a></li>
+    </ul>
+    <ul style="font-weight:bold;">
+        <li><a href="/community">커뮤니티 관리</a></li>
+    </ul>
+    <ul>
+        <li><a href="/faq">입양상식</a></li>
+    </ul>
+    <ul>
+        <li><a href="/banner">배너 관리</a></li>
+    </ul>
+    <ul>
+        <li><a href="/question">문의 관리</a></li>
+    </ul>
+</div>
+    <div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <p style="font-size: 20px">커뮤니티 수정</p>
+    </div>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <td colspan="3" class="input" id="commu_Id" th:text="${comm_viewList.isPresent() ? comm_viewList.get().commu_id : ''}"></td>
+        <th>등록자</th>
+        <td class="input" id="member" name="member" th:text="${comm_viewList.isPresent() ? comm_viewList.get().member_id : ''}"></td>
+    </tr>
+    <tr>
+        <th>제목</th>
+        <td colspan="3">
+            <textarea id="title" name="title" class="input" th:text="${comm_viewList.isPresent() ? comm_viewList.get().title : ''}" ></textarea>
+        </td>
+    </tr>
+    <tr>
+        <th>상태</th>
+        <td id="state" name="state" class="input" th:text="${comm_viewList.isPresent() ? comm_viewList.get().state : ''}"></td>
+        <th>등록일</th>
+        <td id="addDate_breed" name="adddate" class="input" th:text="${comm_viewList.isPresent() ? comm_viewList.get().add_date : ''}"></td>
+        <th>수정일</th>
+        <td id="changeDate_breed" name="changedate" class="input" th:text="${comm_viewList.isPresent() ? comm_viewList.get().change_date : ''}"></td>
+    </tr>
+    <tr>
+        <th>내용</th>
+        <td colspan="5">
+            <textarea id="contents" name="contents" class="input" th:text="${comm_viewList.isPresent() ? comm_viewList.get().content : ''}"></textarea>
+        </td>
+    </tr>
+</table>
+            <div class="buttons">
+                <div class="buttons-left">
+                    <button onclick="history.back()">이전</button>
+                    <button type="submit" onclick="upBtn()">수정</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   /* window.addEventListener('DOMContentLoaded', (event) => {
+      openNav();
+    });
+
+    function openNav() {
+      document.getElementById("menu").style.width = "200px";
+      document.getElementById("main").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+      document.getElementById("menu").style.width = "0";
+      document.getElementById("main").style.marginLeft= "0";
+    }
+
+function upBtn(){
+        let commu_id = $("#commu_Id").text();
+        let title = $("#title").val();
+        let add_date = $("#adddate").text();
+        let change_date = $("#changedate").text();
+        let state = $("#state").text();
+        let member_id = $("#member").text();
+        let content = $("#contents").val();
+
+
+        let UpdateData = {
+            "commu_id": commu_id,
+            "member_id": member_id,
+            "add_date": add_date,
+            "change_date": change_date,
+            "title": title,
+            "content": content,
+            "state" : state
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/update_comm",
+            contentType:"application/json",
+            dataType: "json",
+            data: JSON.stringify(UpdateData),
+            success: function(updata){
+                if (updata === 0) {
+                    alert("수정 되었습니다.");
+                }else {
+                    alert("수정 실패하였습니다.");
+                }
+
+            },
+            error: function(){alert("서버통신 오류");}
+
+        })
+    }
+</script>
+</body>
+</html>

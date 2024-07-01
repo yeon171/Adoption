@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>US2 관리자 사이트</title>
+    <!-- 로그인 페이지 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jua&family=Lilita+One&family
+    =Oswald:wght@200..700&family=Poetsen+One&family=Teko:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .login_box{
+            text-align:center;
+        }
+        .logo_img{
+            vertical-align: middle;
+        }
+        .logo_text{
+            margin-bottom: 50px;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+        .idpw{
+            width: 500px;
+            height: 62px;
+            border: 2px solid;
+            border-radius: 8px;
+            font-size: 19px;
+            padding: 0px 22px;
+            margin-bottom: 22px;
+            box-sizing: border-box;
+        }
+        .signUp{
+            text-align:center;
+            margin-top: 30px;
+        }
+        .login_btn{
+            text-align:center;
+        }
+        #login_btn{
+            width: 500px;
+            height: 62px;
+            border-radius: 8px;
+            font-size: 20px;
+            background-color: #355ccd;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login_box">
+        <div class="logo_img">
+            <img class="logoImg" src="logo.png" alt="로고" width="200px" height="200px">
+        </div>
+        <div class="logo_text">
+            <span class=logoText style="font-size:30px;margin-top:20px;"> US2</span>
+        </div>
+        <div>
+            <input class="idpw" type="text" id="email" name="email" placeholder="Email을 입력하세요.">
+        </div>
+        <input class="idpw" type="password" id="pw" name="pw" placeholder="PassWord를 입력하세요.">
+    </div>
+    <div class="login_btn">
+        <button id="login_btn" type="submit" onclick="login_exe()">LOGIN</button>
+    </div>
+    <div class="signUp">
+        <a href="/save" style="text-decoration: none;">회원가입</a>
+    </div>
+<script>
+    function login_exe(){
+        let input_email = $("#email").val();
+        let input_pw = $("#pw").val();
+
+        let LoginData = {
+            "input_email" : input_email,
+            "input_pw" : input_pw
+        }
+
+            $.ajax({
+            type: "POST",
+            url: "/login",
+            contentType:"application/json",
+            dataType: "json",
+            data: JSON.stringify(LoginData),
+            success: function(res){
+                if(res.accessToken != null){
+                    localStorage.setItem('memberId', res.sessionData.memberId);
+                    localStorage.setItem('memType', res.sessionData.memType);
+                    if(localStorage.getItem('memType') === "admin"){
+                        let prompt_where = prompt("관리자페이지면 admin, 사용자페이지면 user를 입력하세요");
+                        let where = String(prompt_where);
+                        if(where == "admin"){
+                            location.href = '/member';
+                        } else if(where == "user"){
+                            location.href = '/breed_user';
+                        } else{
+                            alert("잘못 입력하셨습니다.");
+                        }
+                    }else if(localStorage.getItem('memType') === "user"){
+                        location.href='/breed_user';
+                    }
+
+                }
+            },
+            error: function(xhr, status, error) {
+                // 오류 발생한 경우
+                alert(xhr.responseText);
+            }
+        })
+    }
+</script>
+</body>
+</html>

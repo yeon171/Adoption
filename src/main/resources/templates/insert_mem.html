@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Jua&family=Lilita+One&family
+    =Oswald:wght@200..700&family=Poetsen+One&family=Teko:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .table{
+            border: 1px solid black;
+            width: 100%;
+        }
+        .table th{
+            border: 1px solid;
+        }
+        .table td{
+            border: 1px solid;
+        }
+        .btn_c{
+            border: 1px solid black;
+            background-color: #D7EFE7;
+            margin-top: 20px;
+            display :inline-block;
+        }
+        .btn_d{
+            border: 1px solid black;
+            background-color: #D7EFE7;
+            margin-top: 20px;
+        }
+        .btnS{
+            border: 1px solid black;
+            background-color: #D7EFE7;
+            cursor: pointer;
+            width: 55px;
+            height: 35px;
+        }
+        .content_title{
+            width: 100px;
+            text-align: center;
+        }
+        .input_box{
+            width: 150px;
+        }
+        .txtarea{
+            width: 97%;
+            height: 1.25em;
+            border: none;
+            resize: none;
+            font-size: 20px;
+            overflow:hidden;
+        }
+        .txtarea:focus{
+            outline: none;
+        }
+        .contents{
+            width: 99%;
+            height: 18em;
+            border: none;
+            resize: none;
+            font-size: 20px;
+            overflow:hidden;
+        }
+        .contents:focus {
+            outline: none;
+        }
+        .list{
+            margin-top: 3%;
+            margin-left: 15%;
+            margin-right: 15%;
+            overflow-x:hidden;
+
+        }
+        .btn_position{
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<div id="table" class="list">
+    <table class="table">
+        <caption style="font-size: 20px; margin-bottom: 20px;">회원관리 상세페이지</caption>
+        <tr>
+            <td class="content_title">이름</td>
+            <td colspan="3">
+                <textarea id="name" name="name" class="txtarea"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="content_title">비밀번호</td>
+            <td colspan="3">
+                <textarea id="pw" name="pw" class="txtarea"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="content_title">전화번호</td>
+            <td colspan="3">
+                <textarea id="phone" name="phone" class="txtarea"></textarea>
+            </td>
+        </tr><tr>
+        <td class="content_title">생년월일</td>
+        <td colspan="3">
+            <textarea id="birth" name="birth" class="txtarea"></textarea>
+        </td>
+    </tr>
+        <tr>
+            <td class="content_title">이메일</td>
+            <td colspan="3">
+                <textarea id="email" name="email" class="txtarea"></textarea>
+            </td>
+        </tr>
+
+    </table>
+    <div class="btn_position">
+        <button type="submit" class="btn_c btnS" onclick="insert_Faq()">등록</button>
+    </div>
+</div>
+<script>
+    function insert_Faq(){
+
+        let name = $("#name").val();
+        let pw = $("#pw").val();
+        let phone = $("#phone").val();
+        let birth = $("#birth").val();
+        let email = $("#email").val();
+
+        let InsertData = {
+            "name": name,
+            "pw": pw,
+            "phone": phone,
+            "birth": birth,
+            "email": email
+
+        }
+
+
+        $.ajax({
+            type: "POST",
+            url: "/insert_mem",
+            contentType:"application/json",
+            dataType: "json",
+            data: JSON.stringify(InsertData),
+            success: function(res){
+                if (res === 0) {
+                    alert("등록 되었습니다.");
+                    location.href='/member';
+                }else {
+                    alert("등록 실패하였습니다.");
+                }
+
+            },
+            error: function(){alert("서버통신 오류");}
+        })
+    }
+</script>
+</body>
+</html>
